@@ -5,24 +5,35 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
+    "format": "prettier --write . && next lint --fix",
+    "lint": "prettier --check . && next lint",
     "start": "next start"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.18",
     "@chakra-ui/react": "^2.5.5",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/quattrocento": "^4.5.10",
     "@fontsource/quattrocento-sans": "^4.5.10",
+    "firebase": "^9.19.1",
+    "firebase-admin": "^11.6.0",
+    "framer-motion": "^10.10.0",
+    "mongoose": "^7.0.3",
+    "next": "13.2.4",
+    "nookies": "^2.5.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "reactfire": "^4.2.2"
+  },
+  "devDependencies": {
     "@types/node": "18.15.11",
     "@types/react": "18.0.32",
     "@types/react-dom": "18.0.11",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
-    "framer-motion": "^10.10.0",
-    "next": "13.2.4",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "firebase-tools": "^11.25.3",
+    "prettier": "^2.8.7",
     "typescript": "5.0.3"
   }
 }
