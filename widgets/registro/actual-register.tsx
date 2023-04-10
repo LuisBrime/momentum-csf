@@ -85,12 +85,11 @@ const ActualRegister = () => {
   }, [dispatch, loadingOff, loadingOn, toast, selectedGroup])
 
   useEffect(() => {
-    // if (timeLeft > 0) {
-    //   setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
-    // } else if (timeLeft === 0) {
-    //   fetchGroups()
-    // }
-    fetchGroups()
+    if (timeLeft > 0) {
+      setTimeout(() => setTimeLeft(timeLeft - 1), 1000)
+    } else if (timeLeft === 0) {
+      fetchGroups()
+    }
   }, [fetchGroups, timeLeft])
 
   return (
