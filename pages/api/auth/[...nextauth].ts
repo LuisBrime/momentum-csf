@@ -25,6 +25,7 @@ export const authOptions: AuthOptions = {
     GoogleProvider({
       clientId: process.env.FIREBASE_OAUTH_CLIENT_ID!,
       clientSecret: process.env.FIREBASE_OAUTH_CLIENT_SECRET!,
+      authorization: `https://accounts.google.com/o/oauth2/auth/authorize?response_type=code&prompt=login`,
     }),
   ],
 }
