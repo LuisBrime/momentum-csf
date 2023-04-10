@@ -14,6 +14,7 @@ const colors = {
     900: '#050231',
   },
   brandGrey: {
+    100: '#BEC4C5',
     200: '#A2AAAD',
     300: '#7C878E',
     400: '#5B6770',
@@ -23,8 +24,8 @@ const colors = {
 }
 
 const fonts = {
-  heading: `'Quattrocento', serif`,
-  body: `'Quattrocento Sans', sans-serif`,
+  heading: `'Alata', sans-serif`,
+  body: `'Albert Sans', sans-serif`,
 }
 
 const theme = extendTheme({ colors, fonts })

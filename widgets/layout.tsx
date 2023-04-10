@@ -8,7 +8,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const {} = useRouter()
 
   return (
-    <Box pb={10} bg="brandGrey.200" minH="100vh" w="100vw" as="main">
+    <Box pb={10} bg="brandGrey.300" minH="100vh" w="100vw" as="main">
       <Head>
         <meta
           name="viewport"

@@ -1,30 +1,143 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { Box, Flex, Heading, Text } from '@chakra-ui/react'
+import axios from 'axios'
 import type { GetServerSidePropsContext } from 'next'
-import nookies from 'nookies'
+import { getServerSession } from 'next-auth/next'
 
-import { firebaseAdmin } from '@/lib/auth/admin'
+import { Navbar } from '@/components'
+import { retrieveStudent } from '@/lib/db'
+import { useAppSelector } from '@/redux/hooks'
+import { setStudent } from '@/redux/reducers/student'
+import { selectHasStartedRegistry, selectStudent } from '@/redux/selectors'
+import { wrapper } from '@/redux/store'
+import { RegistroWidget } from '@/widgets'
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  if (process.env.NODE_ENV === 'development') return { props: {} }
+import { authOptions } from './api/auth/[...nextauth]'
 
-  try {
-    const cookies = nookies.get(ctx)
-    const token = await firebaseAdmin.auth().verifyIdToken(cookies.token)
-    const { email } = token
+export const getServerSideProps = wrapper.getServerSideProps(
+  store => async (ctx: GetServerSidePropsContext) => {
+    const session = await getServerSession(ctx.req, ctx.res, authOptions)
+
+    if (!session) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
+    }
+
+    const id = session.user!.email!.split('@')[0]
+    const student = await retrieveStudent(id)
+    store.dispatch(setStudent(student))
 
     return { props: {} }
-  } catch (ignore) {
-    // console.log(ignore)
-    return {
-      redirect: {
-        permanent: false,
-        destination: '/',
-      },
-    }
-  }
-}
+  },
+)
 
 const RegistroPage = () => {
-  return <></>
+  const [currentDate, setCurrentDate] = useState<Date>()
+  const [shownRegisterTime, setShownRT] = useState<string>()
+  const [reloadTimeTime, setTime] = useState(0)
+
+  const student = useAppSelector(selectStudent)
+  const hasStartedRegistry = useAppSelector(selectHasStartedRegistry)
+
+  const studentRegisterTime = useMemo(
+    () => new Date(student!.registrationDate),
+    [student],
+  )
+  const canRegister = useMemo(() => {
+    return (
+      currentDate && currentDate!.getTime() >= studentRegisterTime.getTime()
+    )
+  }, [currentDate, studentRegisterTime])
+
+  const fetchTime = useCallback(async () => {
+    setTime(10)
+    const {
+      data: { data },
+    } = await axios.get('/api/time')
+    setCurrentDate(new Date(data))
+  }, [])
+
+  useEffect(() => {
+    setShownRT(
+      studentRegisterTime.toLocaleDateString('es-MX', {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    )
+  }, [studentRegisterTime])
+
+  useEffect(() => {
+    if (hasStartedRegistry || student?.registeredGroup || canRegister) {
+      return
+    }
+
+    if (reloadTimeTime > 0) {
+      setTimeout(() => setTime(reloadTimeTime - 1), 100)
+    } else if (reloadTimeTime === 0) {
+      fetchTime()
+    }
+  }, [
+    canRegister,
+    hasStartedRegistry,
+    fetchTime,
+    reloadTimeTime,
+    student?.registeredGroup,
+  ])
+
+  return (
+    <>
+      <Navbar />
+
+      <Box
+        pb={7}
+        px={[2.5, 5, 10]}
+        py={10}
+        borderRadius="5px"
+        boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
+        w="100%"
+        bg="brandGrey.200"
+      >
+        <Flex direction="column">
+          <Heading mb={3} color="white" size="md">
+            {`¡Hola ${student!.name}!`}
+          </Heading>
+
+          {canRegister ? (
+            student!.registeredGroup ? (
+              <>
+                <Text mb={2.5} color="white" size="md">
+                  ¡Ya completaste tu registro!
+                </Text>
+
+                <Text color="white" size="md">
+                  En esta página se mostrará tu sesión asignada más adelante.
+                </Text>
+              </>
+            ) : (
+              <RegistroWidget />
+            )
+          ) : (
+            <>
+              <Text mb={2.5} color="white" size="md">
+                Tu registro estará disponible apartir del
+              </Text>
+
+              <Text fontWeight={600} color="brand.500" size="lg">
+                {shownRegisterTime}
+              </Text>
+            </>
+          )}
+        </Flex>
+      </Box>
+    </>
+  )
 }
 
 export default RegistroPage

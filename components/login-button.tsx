@@ -1,10 +1,8 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
+import { signIn, useSession } from 'next-auth/react'
 
 import { Button, createIcon } from '@chakra-ui/react'
-import { GoogleAuthProvider } from 'firebase/auth'
 import { useRouter } from 'next/router'
-
-import { useSignInWithProvider } from '@/lib/hooks'
 
 const GoogleIcon = createIcon({
   viewBox: '0 0 48 48',
@@ -37,22 +35,20 @@ const GoogleIcon = createIcon({
 })
 
 const LoginButton = () => {
-  const [signIn, signInState] = useSignInWithProvider()
+  const { status } = useSession()
   const { replace } = useRouter()
 
-  const onSingIn = useCallback(async () => {
-    await replace('/registro')
-  }, [replace])
-
   useEffect(() => {
-    if (signInState.success) onSingIn()
-  }, [onSingIn, signInState.success])
+    if (status === 'authenticated') replace('/registro')
+  }, [replace, status])
 
   return (
     <Button
       colorScheme="brand"
       leftIcon={<GoogleIcon />}
-      onClick={() => signIn(new GoogleAuthProvider())}
+      onClick={() => signIn('google')}
+      isLoading={status === 'loading'}
+      loadingText="Iniciando sesión"
     >
       Inicia sesión
     </Button>

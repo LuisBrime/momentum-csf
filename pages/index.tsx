@@ -7,23 +7,24 @@ const HomePage = () => {
     <Center h="100vh">
       <Box
         pb={7}
+        px={[2.5, 5, 10]}
         borderRadius="5px"
         boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
-        w="container.sm"
+        w={['100%', 'container.sm']}
         maxW="container.sm"
-        bg="brandGrey.300"
+        bg="brandGrey.200"
       >
         <Center>
           <VStack spacing={2.5}>
-            <Box w={96}>
+            <Box w={[32, 48, 60, 96]}>
               <Img src="images/momentum_white.png" />
             </Box>
 
-            <Heading color="white" as="h1" size="xl">
+            <Heading color="white" as="h1" size={['sm', 'md', 'lg', 'xl']}>
               Registro
             </Heading>
 
-            <Text color="white" fontSize="lg">
+            <Text color="white" fontSize={['sm', 'md', 'lg']}>
               Ingresa con tu correo institucional para continuar
             </Text>
 

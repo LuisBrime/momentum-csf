@@ -1,43 +1,50 @@
-import { ChakraProvider } from '@chakra-ui/react'
-import {
-  connectAuthEmulator,
-  initializeAuth,
-  indexedDBLocalPersistence,
-  inMemoryPersistence,
-} from 'firebase/auth'
-import { initializeApp } from 'firebase/app'
-import type { AppProps } from 'next/app'
-import { AuthProvider, FirebaseAppProvider } from 'reactfire'
+import { useEffect } from 'react'
 
-import configuration from '@/lib/auth/config'
-import { isBrowser } from '@/lib/utils'
+import { ChakraProvider } from '@chakra-ui/react'
+import type { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
+import { SessionProvider } from 'next-auth/react'
+import NProgress from 'nprogress'
+import { Provider } from 'react-redux'
+
+import { wrapper } from '@/redux/store'
 import theme from '@/theme'
 import { Layout } from '@/widgets'
 
-import '@fontsource/quattrocento'
-import '@fontsource/quattrocento-sans'
+import '@fontsource/alata'
+import '@fontsource/albert-sans'
+import 'nprogress/nprogress.css'
 
-export default function App({ Component, pageProps }: AppProps) {
-  const { emulator, ...baseConfig } = configuration
-  const fbApp = initializeApp(baseConfig)
-  const persistence = isBrowser()
-    ? indexedDBLocalPersistence
-    : inMemoryPersistence
-  const auth = initializeAuth(fbApp, { persistence })
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+  const { store, props } = wrapper.useWrappedStore(pageProps)
+  const { events } = useRouter()
 
-  if (emulator.activeEmulator && !('emulator' in auth.config)) {
-    connectAuthEmulator(auth, emulator.emulatorHost)
-  }
+  useEffect(() => {
+    const handleRouteStart = () => NProgress.start()
+    const handleRouteEnd = () => NProgress.done()
+
+    events.on('routeChangeStart', handleRouteStart)
+    events.on('routeChangeComplete', handleRouteEnd)
+    events.on('routeChangeError', handleRouteEnd)
+
+    return () => {
+      events.off('routeChangeStart', handleRouteStart)
+      events.off('routeChangeComplete', handleRouteEnd)
+      events.off('routeChangeError', handleRouteEnd)
+    }
+  }, [events])
 
   return (
-    <ChakraProvider theme={theme}>
-      <FirebaseAppProvider firebaseApp={fbApp}>
-        <AuthProvider sdk={auth}>
+    <Provider store={store}>
+      <ChakraProvider theme={theme}>
+        <SessionProvider session={session}>
           <Layout>
-            <Component {...pageProps} />
+            <Component {...props.pageProps} />
           </Layout>
-        </AuthProvider>
-      </FirebaseAppProvider>
-    </ChakraProvider>
+        </SessionProvider>
+      </ChakraProvider>
+    </Provider>
   )
 }
+
+export default App
