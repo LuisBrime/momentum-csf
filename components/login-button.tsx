@@ -47,7 +47,7 @@ const LoginButton = () => {
       colorScheme="brand"
       leftIcon={<GoogleIcon />}
       onClick={() => signIn('google')}
-      isLoading={status === 'loading'}
+      isLoading={status === 'loading' || status === 'authenticated'}
       loadingText="Iniciando sesión"
     >
       Inicia sesión
