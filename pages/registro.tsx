@@ -11,7 +11,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { setStudent } from '@/redux/reducers/student'
 import { selectHasStartedRegistry, selectStudent } from '@/redux/selectors'
 import { wrapper } from '@/redux/store'
-import { RegistroWidget } from '@/widgets'
+import { RegisteredSession, RegistroWidget } from '@/widgets'
 
 import { authOptions } from './api/auth/[...nextauth]'
 
@@ -114,14 +114,18 @@ const RegistroPage = () => {
             student!.registeredGroup ? (
               <>
                 <Text mb={2.5} color="white" size="md">
-                  ¡Ya completaste tu registro!
+                  ¡Completaste tu registro!
                 </Text>
 
-                <Box px={10} py={4} borderRadius="20px" bg="brandGrey.100">
-                  <Text textAlign="center" color="brand.900" size="md">
-                    {`💡 Recuerda consultar tu sesión 24 horas después de haberla registrado en este mismo espacio.`}
-                  </Text>
-                </Box>
+                {process.env.NEXT_PUBLIC_SHOW_SESSION === 'true' ? (
+                  <RegisteredSession groupId={student!.registeredGroup} />
+                ) : (
+                  <Box px={10} py={4} borderRadius="20px" bg="brandGrey.100">
+                    <Text textAlign="center" color="brand.900" size="md">
+                      {`💡 Recuerda consultar tu sesión 24 horas después de haberla registrado en este mismo espacio.`}
+                    </Text>
+                  </Box>
+                )}
               </>
             ) : (
               <RegistroWidget />

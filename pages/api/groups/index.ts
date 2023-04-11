@@ -5,7 +5,7 @@ import dbConnect from '@/lib/db/client'
 import { Group } from '@/lib/db/models'
 import { ClientGroup } from '@/lib/types'
 
-import { authOptions } from './auth/[...nextauth]'
+import { authOptions } from '../auth/[...nextauth]'
 
 export default async function handler(
   req: NextApiRequest,
