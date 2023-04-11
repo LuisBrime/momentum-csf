@@ -30,7 +30,7 @@ const RegistroStart = () => {
         onClick={() => startRegistry()}
         mt={4}
         w={32}
-        colorScheme="brand"
+        colorScheme="brandSecondary"
         variant="outline"
       >
         Inicia tu registro

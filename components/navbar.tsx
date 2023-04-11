@@ -28,7 +28,7 @@ const Navbar = () => {
           <Button
             onClick={() => bye()}
             color="white"
-            colorScheme="brand"
+            colorScheme="brandSecondary"
             variant="ghost"
           >
             Cerrar sesión

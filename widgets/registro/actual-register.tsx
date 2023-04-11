@@ -121,8 +121,8 @@ const ActualRegister = () => {
                 isLoading={isLoading}
                 h={8}
                 w={32}
-                colorScheme="brand"
-                variant="outline"
+                colorScheme="brandSecondary"
+                variant="solid"
               >
                 Registrar
               </Button>
@@ -134,7 +134,7 @@ const ActualRegister = () => {
       {groups.length !== 0 && (
         <Box w="100%">
           <TableContainer>
-            <Table size="lg" variant="simple">
+            <Table colorScheme="brand" size="lg" variant="simple">
               <Thead>
                 <Tr>
                   <Th>No. de Sesión</Th>
@@ -145,20 +145,24 @@ const ActualRegister = () => {
                 </Tr>
               </Thead>
 
-              <Tbody>
+              <Tbody color="brand.50">
                 {groups.map((group, index) => {
                   const actualDate = new Date(group.sessionDate)
                   return (
                     <Tr
                       onClick={() => selectGroup(group.id)}
                       bg={
-                        selectedGroup === group.id ? 'brand.100' : 'transparent'
+                        selectedGroup === group.id
+                          ? 'brandSecondary.600'
+                          : 'transparent'
                       }
                       key={`tb-gp-${index}`}
                       cursor={isLoading ? 'default' : 'pointer'}
                     >
                       <Td>{`${group.id}`}</Td>
-                      <Td>{`${actualDate.getHours()}:${actualDate.getMinutes()}`}</Td>
+                      <Td>{`${`0${actualDate.getHours()}`.slice(
+                        -2,
+                      )}:${`0${actualDate.getMinutes()}`.slice(-2)}`}</Td>
                       <Td>{`${group.moderator}`}</Td>
                       <Td>
                         {group.evaluators.map((e, i) => (

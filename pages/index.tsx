@@ -12,7 +12,7 @@ const HomePage = () => {
         boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
         w={['100%', 'container.sm']}
         maxW="container.sm"
-        bg="brandGrey.200"
+        bg="momentumBlack"
       >
         <Center>
           <VStack spacing={2.5}>

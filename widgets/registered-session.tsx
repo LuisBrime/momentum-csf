@@ -37,7 +37,7 @@ const RegisteredSession = ({ groupId }: RegisteredSessionProps) => {
   return group ? (
     <Box w="100%">
       <TableContainer>
-        <Table size="lg" variant="simple">
+        <Table colorScheme="brand" size="lg" variant="simple">
           <TableCaption>Sesión Registrada</TableCaption>
           <Thead>
             <Tr>
@@ -49,13 +49,15 @@ const RegisteredSession = ({ groupId }: RegisteredSessionProps) => {
             </Tr>
           </Thead>
 
-          <Tbody>
+          <Tbody color="brand.50">
             {(function () {
               const actualDate = new Date(group.sessionDate!)
               return (
                 <Tr>
                   <Td>{group!.id}</Td>
-                  <Td>{`${actualDate.getHours()}:${actualDate.getMinutes()}`}</Td>
+                  <Td>{`${`0${actualDate.getHours()}`.slice(
+                    -2,
+                  )}:${`0${actualDate.getMinutes()}`.slice(-2)}`}</Td>
                   <Td>{group!.moderator}</Td>
                   <Td>
                     {group.evaluators!.map((e, i) => (

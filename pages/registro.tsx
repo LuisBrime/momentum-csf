@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { Box, Flex, Heading, Text } from '@chakra-ui/react'
+import { Box, Flex, Heading, Text, chakra } from '@chakra-ui/react'
 import axios from 'axios'
 import type { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth/next'
@@ -103,7 +103,7 @@ const RegistroPage = () => {
         borderRadius="5px"
         boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"
         w="100%"
-        bg="brandGrey.200"
+        bg="momentumBlack"
       >
         <Flex direction="column">
           <Heading mb={3} color="white" size="md">
@@ -134,10 +134,13 @@ const RegistroPage = () => {
             <>
               <Text mb={2.5} color="white" size="md">
                 Tu registro estará disponible apartir del
-              </Text>
-
-              <Text fontWeight={600} color="brand.500" size="lg">
-                {shownRegisterTime}
+                <chakra.span
+                  fontWeight={600}
+                  fontSize="lg"
+                  color="brandSecondary.500"
+                >
+                  {` ${shownRegisterTime}`}
+                </chakra.span>
               </Text>
             </>
           )}
