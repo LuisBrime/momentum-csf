@@ -50,9 +50,10 @@ const RegistroPage = () => {
   )
   const canRegister = useMemo(() => {
     return (
-      currentDate && currentDate!.getTime() >= studentRegisterTime.getTime()
+      student?.registeredGroup ||
+      (currentDate && currentDate!.getTime() >= studentRegisterTime.getTime())
     )
-  }, [currentDate, studentRegisterTime])
+  }, [currentDate, studentRegisterTime, student?.registeredGroup])
 
   const fetchTime = useCallback(async () => {
     setTime(10)
@@ -116,9 +117,11 @@ const RegistroPage = () => {
                   ¡Ya completaste tu registro!
                 </Text>
 
-                <Text color="white" size="md">
-                  En esta página se mostrará tu sesión asignada más adelante.
-                </Text>
+                <Box px={10} py={4} borderRadius="20px" bg="brandGrey.100">
+                  <Text textAlign="center" color="brand.900" size="md">
+                    {`💡 Recuerda consultar tu sesión 24 horas después de haberla registrado en este mismo espacio.`}
+                  </Text>
+                </Box>
               </>
             ) : (
               <RegistroWidget />
