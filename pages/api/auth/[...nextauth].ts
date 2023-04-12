@@ -11,7 +11,7 @@ export const authOptions: AuthOptions = {
         console.log(`---------------Invalid email ${profile?.email}`)
         return false
       }
-      
+
       const id = profile!.email!.split('@')[0].toUpperCase()
       const isValidStudent = await validateStudent(id)
       if (!isValidStudent) {

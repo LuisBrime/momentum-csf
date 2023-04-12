@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth/next'
 
 import { Navbar } from '@/components'
 import { retrieveStudent } from '@/lib/db'
+import { getMonthString } from '@/lib/utils'
 import { useAppSelector } from '@/redux/hooks'
 import { setStudent } from '@/redux/reducers/student'
 import { selectHasStartedRegistry, selectStudent } from '@/redux/selectors'
@@ -64,14 +65,11 @@ const RegistroPage = () => {
   }, [])
 
   useEffect(() => {
-    setShownRT(
-      studentRegisterTime.toLocaleDateString('es-MX', {
-        day: 'numeric',
-        month: 'long',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    )
+    const day = studentRegisterTime.getUTCDate()
+    const month = getMonthString(studentRegisterTime.getUTCMonth())
+    const hour = `0${studentRegisterTime.getUTCHours() - 6}`.slice(-2)
+    const minutes = `0${studentRegisterTime.getUTCMinutes()}`.slice(-2)
+    setShownRT(`${day} de ${month}, ${hour}:${minutes}`)
   }, [studentRegisterTime])
 
   useEffect(() => {
