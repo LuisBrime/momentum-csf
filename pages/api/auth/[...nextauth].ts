@@ -7,14 +7,12 @@ import { validateStudent } from '@/lib/db'
 export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ profile }) {
-      console.log(`---------------Sign In request: ${profile?.email}`)
       if (!profile?.email?.endsWith('@tec.mx')) {
-        console.log(`---------------Invalid email`)
+        console.log(`---------------Invalid email ${profile?.email}`)
         return false
       }
       
-      const id = profile!.email!.split('@')[0]
-      console.log(`---------------DB Validation: ${id}`)
+      const id = profile!.email!.split('@')[0].toUpperCase()
       const isValidStudent = await validateStudent(id)
       if (!isValidStudent) {
         console.log(`---------------
