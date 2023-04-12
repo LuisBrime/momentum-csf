@@ -160,9 +160,9 @@ const ActualRegister = () => {
                       cursor={isLoading ? 'default' : 'pointer'}
                     >
                       <Td>{`${group.id}`}</Td>
-                      <Td>{`${`0${actualDate.getHours()}`.slice(
+                      <Td>{`${`0${actualDate.getUTCHours() - 6}`.slice(
                         -2,
-                      )}:${`0${actualDate.getMinutes()}`.slice(-2)}`}</Td>
+                      )}:${`0${actualDate.getUTCMinutes()}`.slice(-2)}`}</Td>
                       <Td>{`${group.moderator}`}</Td>
                       <Td>
                         {group.evaluators.map((e, i) => (
