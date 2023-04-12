@@ -28,7 +28,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       }
     }
 
-    const id = session.user!.email!.split('@')[0]
+    const id = session.user!.email!.split('@')[0].toUpperCase()
     const student = await retrieveStudent(id)
     store.dispatch(setStudent(student))
 
