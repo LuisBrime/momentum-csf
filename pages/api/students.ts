@@ -27,7 +27,7 @@ export default async function handler(
       return
     }
 
-    const studentId = session!.user!.email!.split('@')[0]
+    const studentId = session!.user!.email!.split('@')[0].toUpperCase()
     await Group.updateOne({ _id: groupId }, { leftInscriptions: leftIns! - 1 })
     const student = await Student.findOneAndUpdate(
       { matricula: studentId },
