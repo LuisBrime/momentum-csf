@@ -4,7 +4,10 @@ import { Student } from './models'
 export async function validateStudent(id: string): Promise<boolean> {
   await dbConnect()
   const student = await Student.findOne({ matricula: id })
-  if (!student) return false
+  if (!student) {
+    console.log(`---------------Cannot find student ${id}`)
+    return false
+  }
   return true
 }
 

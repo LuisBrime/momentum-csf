@@ -14,6 +14,7 @@ export const authOptions: AuthOptions = {
       }
       
       const id = profile!.email!.split('@')[0]
+      console.log(`---------------DB Validation: ${id}`)
       const isValidStudent = await validateStudent(id)
       if (!isValidStudent) {
         console.log(`---------------
