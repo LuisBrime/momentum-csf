@@ -7,12 +7,21 @@ import { validateStudent } from '@/lib/db'
 export const authOptions: AuthOptions = {
   callbacks: {
     async signIn({ profile }) {
+      console.log(`---------------Sign In request: ${profile}`)
       if (!profile?.email?.endsWith('@tec.mx')) {
+        console.log(`---------------Invalid email`)
         return false
       }
-
+      
       const id = profile!.email!.split('@')[0]
       const isValidStudent = await validateStudent(id)
+      if (!isValidStudent) {
+        console.log(`---------------
+          Not a valid student:
+          ${profile}
+          ${id}
+        `)
+      }
       return isValidStudent
     },
   },
