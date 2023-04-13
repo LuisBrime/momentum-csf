@@ -134,7 +134,7 @@ const ActualRegister = () => {
       {groups.length !== 0 && (
         <Box w="100%">
           <TableContainer>
-            <Table colorScheme="brand" size="lg" variant="simple">
+            <Table colorScheme="brand" size="sm" variant="simple">
               <Thead>
                 <Tr>
                   <Th>No. de Sesión</Th>
