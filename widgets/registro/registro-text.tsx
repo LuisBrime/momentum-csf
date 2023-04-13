@@ -1,4 +1,4 @@
-import { ListItem, Text, UnorderedList } from '@chakra-ui/react'
+import { Text } from '@chakra-ui/react'
 
 const RegistroText = () => (
   <>

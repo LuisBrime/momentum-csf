@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 
-import { Button } from '@chakra-ui/react'
+import { Button, Text } from '@chakra-ui/react'
 
 import { useAppDispatch } from '@/redux/hooks'
 import { setHasStartedRegistry } from '@/redux/reducers/student'
@@ -8,7 +8,11 @@ import { setHasStartedRegistry } from '@/redux/reducers/student'
 import ActualRegister from './actual-register'
 import RegistroText from './registro-text'
 
-const RegistroStart = () => {
+interface RegistroStartProps {
+  currentDate: Date
+}
+
+const RegistroStart = ({ currentDate }: RegistroStartProps) => {
   const [showRegister, setRegister] = useState(false)
 
   const dispatch = useAppDispatch()
@@ -17,6 +21,16 @@ const RegistroStart = () => {
     dispatch(setHasStartedRegistry(true))
     setRegister(true)
   }, [dispatch])
+
+  if (
+    currentDate.getTime() > new Date(Date.UTC(2023, 3, 14, 5, 59)).getTime()
+  ) {
+    return (
+      <Text color="white" size="md">
+        El registro para las sesiones de Momentum ya se encuentra cerrado.
+      </Text>
+    )
+  }
 
   return showRegister ? (
     <>
