@@ -6,7 +6,7 @@ from dateutil import parser
 from dateutil.tz import gettz
 
 connect(
-  host='mongodb+srv://vercel-admin-user:DZbUPmWtUuhwmSEC@momentum.9z6w28y.mongodb.net/db?retryWrites=true&w=majority'
+  host='XXX'
 )
 
 class Group(Document):
