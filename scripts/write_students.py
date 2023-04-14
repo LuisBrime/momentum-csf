@@ -24,7 +24,7 @@ class Student(Document):
 
 students = Student.objects(
   matricula__startswith='A0',
-  registeredGroup__exists=False,
+  registeredGroup__exists=True,
 )
 
 student_data = []
@@ -37,9 +37,10 @@ for s in students:
     fechaDeRegistro=actual_reg_date.strftime('%d/%m/%Y %H:%M'),
     nombres=s.names,
     apellidos=s.surnames,
+    grupoRegistrado=s.registeredGroup,
   ))
 print(len(student_data))
 
 df = pd.DataFrame(student_data)
-df.to_csv('alumnos_no_registrados.csv')
+df.to_excel('alumnos_registrados.xlsx')
 

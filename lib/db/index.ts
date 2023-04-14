@@ -1,18 +1,12 @@
 import dbConnect from './client'
 import { Student } from './models'
+import { ClientStudent } from '../types'
 
 export async function validateStudent(id: string): Promise<boolean> {
   await dbConnect()
   const student = await Student.findOne({ matricula: id })
   if (!student) return false
   return true
-}
-
-interface ClientStudent {
-  id: string
-  name: string
-  registrationDate: string
-  registeredGroup: string | null
 }
 
 export async function retrieveStudent(id: string): Promise<ClientStudent> {
@@ -23,5 +17,11 @@ export async function retrieveStudent(id: string): Promise<ClientStudent> {
     name: student!.names,
     registrationDate: student!.registrationDate.toString(),
     registeredGroup: student!.registeredGroup ?? null,
+    visualSupport: student!.visualSupport
+      ? {
+          type: student!.visualSupport.type,
+          url: student!.visualSupport.url ?? null,
+        }
+      : null,
   }
 }

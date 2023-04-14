@@ -1,5 +1,10 @@
 import mongoose from 'mongoose'
 
+interface VisualSupport {
+  type: 'virtual' | 'physical'
+  url?: string
+}
+
 export interface IStudent {
   matricula: string
   registrationDate: Date
@@ -7,6 +12,7 @@ export interface IStudent {
   surnames: string
   grade: Number
   registeredGroup?: string
+  visualSupport: VisualSupport
 }
 
 const studentSchema = new mongoose.Schema<IStudent>(
@@ -17,6 +23,7 @@ const studentSchema = new mongoose.Schema<IStudent>(
     surnames: { required: true, type: String },
     grade: { required: true, type: Number },
     registeredGroup: String,
+    visualSupport: { type: Map, of: String },
   },
   { versionKey: false },
 )

@@ -26,6 +26,7 @@ const colors = {
     900: '#9B5C1C',
   },
   brandGrey: {
+    50: '#D4D8D9',
     100: '#BEC4C5',
     200: '#A2AAAD',
     300: '#7C878E',
@@ -34,6 +35,7 @@ const colors = {
   },
   white: '#ffffff',
   momentumBlack: '#222222',
+  momentumBlacky: '#444444DD',
   black: '#0A0A0A',
 }
 

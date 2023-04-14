@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 
 import dbConnect from '@/lib/db/client'
-import { Group, Student } from '@/lib/db/models'
+import { Student } from '@/lib/db/models'
 import { ClientStudent } from '@/lib/types'
 
 import { authOptions } from './auth/[...nextauth]'
@@ -19,26 +19,23 @@ export default async function handler(
     }
 
     await dbConnect()
-    const { groupId } = req.body
-    const group = await Group.findById(groupId)
-    const leftIns = group?.leftInscriptions
-    if (!group || leftIns <= 0) {
-      res.status(400).json({ error: 'Full Group' })
+    const { type, url } = req.body
+    if (type === 'virtual' && !url) {
+      res.status(400).json({ error: 'Missing URL for type' })
       return
     }
 
     const studentId = session!.user!.email!.split('@')[0].toUpperCase()
-    await Group.updateOne({ _id: groupId }, { leftInscriptions: leftIns! - 1 })
     const student = await Student.findOneAndUpdate(
       { matricula: studentId },
-      { registeredGroup: groupId },
+      { $set: { 'visualSupport.type': type, 'visualSupport.url': url } },
     )
     const cleanedStudent = {
       id: student!.matricula,
       name: student!.names,
       registrationDate: student!.registrationDate.toString(),
-      registeredGroup: groupId,
-      visualSupport: null,
+      registeredGroup: student!.registeredGroup!,
+      visualSupport: { type, url: url ?? null },
     }
     res.status(201).json({ data: cleanedStudent })
   } else {

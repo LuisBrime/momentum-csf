@@ -27,7 +27,7 @@ const RegistroStart = ({ currentDate }: RegistroStartProps) => {
   ) {
     return (
       <Text color="white" size="md">
-        El registro para las sesiones de Momentum ya se encuentra cerrado.
+        El registro para las sesiones de Momentum ha terminado.
       </Text>
     )
   }

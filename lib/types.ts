@@ -11,4 +11,8 @@ export interface ClientStudent {
   name: string
   registrationDate: string
   registeredGroup: string | null
+  visualSupport: {
+    type: 'virtual' | 'physical'
+    url: string | null
+  } | null
 }

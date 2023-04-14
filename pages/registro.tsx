@@ -12,7 +12,7 @@ import { useAppSelector } from '@/redux/hooks'
 import { setStudent } from '@/redux/reducers/student'
 import { selectHasStartedRegistry, selectStudent } from '@/redux/selectors'
 import { wrapper } from '@/redux/store'
-import { RegisteredSession, RegistroWidget } from '@/widgets'
+import { CompleteRegistration, RegistroWidget } from '@/widgets'
 
 import { authOptions } from './api/auth/[...nextauth]'
 
@@ -110,35 +110,7 @@ const RegistroPage = () => {
 
           {canRegister ? (
             student!.registeredGroup ? (
-              <>
-                <Text mb={2.5} color="white" size="md">
-                  ¡Completaste tu registro!
-                </Text>
-
-                {process.env.NEXT_PUBLIC_SHOW_SESSION === 'true' ? (
-                  <RegisteredSession groupId={student!.registeredGroup} />
-                ) : (
-                  <>
-                    <Box
-                      mb={7}
-                      px={10}
-                      py={4}
-                      borderRadius="20px"
-                      bg="brandGrey.100"
-                    >
-                      <Text textAlign="center" color="brand.900" size="md">
-                        {`💡 Recuerda consultar tu sesión 24 horas después de haberla registrado en este mismo espacio.`}
-                      </Text>
-                    </Box>
-
-                    <Box px={10} py={4} borderRadius="20px" bg="brandGrey.100">
-                      <Text textAlign="center" color="brand.900" size="md">
-                        {`💡 Recuerda que en este mismo espacio subirás tu apoyo visual el 14 de abril a las 11:30 al 17 de abril 23:59.`}
-                      </Text>
-                    </Box>
-                  </>
-                )}
-              </>
+              <CompleteRegistration />
             ) : (
               <RegistroWidget currentDate={currentDate!} />
             )
