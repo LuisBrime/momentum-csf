@@ -23,7 +23,7 @@ const RegistroStart = ({ currentDate }: RegistroStartProps) => {
   }, [dispatch])
 
   if (
-    currentDate.getTime() > new Date(Date.UTC(2023, 3, 14, 5, 59)).getTime()
+    currentDate.getTime() > new Date(Date.UTC(2023, 3, 14, 17, 30)).getTime()
   ) {
     return (
       <Text color="white" size="md">
