@@ -13,6 +13,7 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import axios from 'axios'
+import moment from 'moment-timezone'
 
 import { ClientGroup } from '@/lib/types'
 
@@ -55,9 +56,9 @@ const RegisteredSession = ({ groupId }: RegisteredSessionProps) => {
               return (
                 <Tr>
                   <Td>{group!.id}</Td>
-                  <Td>{`${`0${actualDate.getHours()}`.slice(
+                  <Td>{`${`0${actualDate.getUTCHours() - 6}`.slice(
                     -2,
-                  )}:${`0${actualDate.getMinutes()}`.slice(-2)}`}</Td>
+                  )}:${`0${actualDate.getUTCMinutes()}`.slice(-2)}`}</Td>
                   <Td>{group!.moderator}</Td>
                   <Td>
                     {group.evaluators!.map((e, i) => (
