@@ -13,7 +13,6 @@ import {
   Tr,
 } from '@chakra-ui/react'
 import axios from 'axios'
-import moment from 'moment-timezone'
 
 import { ClientGroup } from '@/lib/types'
 
