@@ -22,15 +22,15 @@ const RegistroStart = ({ currentDate }: RegistroStartProps) => {
     setRegister(true)
   }, [dispatch])
 
-  if (
-    currentDate.getTime() > new Date(Date.UTC(2023, 5, 5, 17, 59)).getTime()
-  ) {
-    return (
-      <Text color="white" size="md">
-        El registro para las sesiones de Momentum ha terminado.
-      </Text>
-    )
-  }
+  // if (
+  //   currentDate.getTime() > new Date(Date.UTC(2023, 5, 5, 17, 59)).getTime()
+  // ) {
+  //   return (
+  //     <Text color="white" size="md">
+  //       El registro para las sesiones de Momentum ha terminado.
+  //     </Text>
+  //   )
+  // }
 
   return showRegister ? (
     <>
