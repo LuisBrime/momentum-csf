@@ -1,5 +1,5 @@
 import dbConnect from './client'
-import { Student } from './models'
+import { Student, VisualSupport } from './models'
 import { ClientStudent } from '../types'
 
 export async function validateStudent(id: string): Promise<boolean> {
@@ -12,16 +12,23 @@ export async function validateStudent(id: string): Promise<boolean> {
 export async function retrieveStudent(id: string): Promise<ClientStudent> {
   await dbConnect()
   const student = await Student.findOne({ matricula: id })
+  const hasVisualSupport =
+    student!.visualSupport && student!.visualSupport.get('type')
+
+  let visualSupport
+  if (hasVisualSupport) {
+    const vsMap = student!.visualSupport?.toObject()
+    visualSupport = {
+      type: vsMap.get('type'),
+      url: vsMap.get('url') ?? null,
+    }
+  }
+
   return {
     id: student!.matricula,
     name: student!.names,
     registrationDate: student!.registrationDate.toString(),
     registeredGroup: student!.registeredGroup ?? null,
-    visualSupport: student!.visualSupport
-      ? {
-          type: student!.visualSupport.type,
-          url: student!.visualSupport.url ?? null,
-        }
-      : null,
+    visualSupport: visualSupport ?? null,
   }
 }

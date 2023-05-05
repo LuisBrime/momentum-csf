@@ -18,8 +18,9 @@ const groupSchema = new mongoose.Schema<IGroup>(
     salon: { required: true, type: String },
     leftInscriptions: { required: true, type: Number },
   },
-  { versionKey: false },
+  { collection: 'groups_segunda', versionKey: false },
 )
 
 export const Group =
-  mongoose.models.groups || mongoose.model<IGroup>('groups', groupSchema)
+  mongoose.models.groups_segunda ||
+  mongoose.model<IGroup>('groups_segunda', groupSchema)

@@ -23,7 +23,7 @@ const Evidencias = () => {
     fetchDate()
   }, [fetchDate])
 
-  if (currentDate && currentDate!.getTime() >= Date.UTC(2023, 3, 18, 5, 59)) {
+  if (currentDate && currentDate!.getTime() >= Date.UTC(2023, 5, 5, 17, 59)) {
     return (
       <Text color="white" size="md">
         El registro de apoyo visual ha terminado.
