@@ -67,7 +67,11 @@ const StudentList: FC<StudentListProps> = ({ isUltraAdmin = false }) => {
       const { shouldReturn } = await handleResponse(response.status)
       if (shouldReturn) return
 
-      const { data: { data: { students } } } = response
+      const {
+        data: {
+          data: { students },
+        },
+      } = response
 
       const studentList = (students as any[]).map(s => ({
         ...s,

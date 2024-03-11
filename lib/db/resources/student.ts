@@ -28,9 +28,9 @@ export async function getAll(
     q = { program: query!.program!.toLowerCase() }
   }
 
-  const dbStudents = await (Student.find(q).sort({
+  const dbStudents = await Student.find(q).sort({
     registrationDate: 'asc',
-  }))
+  })
   const students = dbStudents.map(s => studentToClient(s, fullName))
 
   return students
