@@ -6,10 +6,11 @@ import { hydrateAction } from './base'
 
 export interface StudentState {
   student?: ClientStudent
+  userType: Number
   hasStartedRegistry: boolean
 }
 
-const initialState: StudentState = { hasStartedRegistry: false }
+const initialState: StudentState = { hasStartedRegistry: false, userType: 0 }
 
 const studentSlice = createSlice({
   initialState,
@@ -18,6 +19,9 @@ const studentSlice = createSlice({
     setStudent(state: StudentState, action: PayloadAction<ClientStudent>) {
       state.student = action.payload
     },
+    setUserType(state: StudentState, action: PayloadAction<Number>) {
+      state.userType = action.payload
+    },
     setHasStartedRegistry(state: StudentState, action: PayloadAction<boolean>) {
       state.hasStartedRegistry = action.payload
     },
@@ -25,6 +29,7 @@ const studentSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(hydrateAction, (state, action) => {
       state.student = action.payload.student.student
+      state.userType = action.payload.student.userType
       state.hasStartedRegistry = action.payload.student.hasStartedRegistry
     })
   },
@@ -32,4 +37,5 @@ const studentSlice = createSlice({
 
 export default studentSlice.reducer
 
-export const { setHasStartedRegistry, setStudent } = studentSlice.actions
+export const { setHasStartedRegistry, setStudent, setUserType } =
+  studentSlice.actions

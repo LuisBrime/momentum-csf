@@ -1,26 +1,27 @@
 import mongoose from 'mongoose'
 
 export interface IGroup {
-  _id: string
+  groupId: string
   sessionDate: Date
   moderator: string
   evaluators: string[]
   salon: string
   leftInscriptions: Number
+  isIB: boolean
 }
 
 const groupSchema = new mongoose.Schema<IGroup>(
   {
-    _id: String,
+    groupId: String,
     sessionDate: { required: true, type: Date },
     moderator: { required: true, type: String },
     evaluators: [{ required: true, type: String }],
     salon: { required: true, type: String },
     leftInscriptions: { required: true, type: Number },
+    isIB: { required: true, default: false, type: Boolean },
   },
-  { collection: 'groups_segunda', versionKey: false },
+  { collection: 'groups', versionKey: false },
 )
 
 export const Group =
-  mongoose.models.groups_segunda ||
-  mongoose.model<IGroup>('groups_segunda', groupSchema)
+  mongoose.models.groups || mongoose.model<IGroup>('groups', groupSchema)

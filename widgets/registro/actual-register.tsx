@@ -79,7 +79,7 @@ const ActualRegister = () => {
     const {
       data: { data: student },
     } = resp
-    console.log(student)
+
     dispatch(setStudent(student))
     loadingOff()
   }, [dispatch, loadingOff, loadingOn, toast, selectedGroup])
@@ -151,6 +151,12 @@ const ActualRegister = () => {
                   return (
                     <Tr
                       onClick={() => selectGroup(group.id)}
+                      _hover={{
+                        background: 'brandSecondary.900',
+                      }}
+                      _active={{
+                        background: 'brandSecondary.600',
+                      }}
                       bg={
                         selectedGroup === group.id
                           ? 'brandSecondary.600'

@@ -9,6 +9,11 @@ export const selectStudent = createSelector(
   state => state.student,
 )
 
+export const selectUserType = createSelector(
+  selectStudentState,
+  state => state.userType,
+)
+
 export const selectHasStartedRegistry = createSelector(
   selectStudentState,
   state => state.hasStartedRegistry,

@@ -1,11 +1,16 @@
 import { useCallback } from 'react'
 
-import { Box, Button, Flex, Img } from '@chakra-ui/react'
+import { Badge, Box, Button, Flex, Img, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { signOut } from 'next-auth/react'
 
+import { useAppSelector } from '@/redux/hooks'
+import { selectUserType } from '@/redux/selectors'
+
 const Navbar = () => {
   const { replace } = useRouter()
+
+  const userType = useAppSelector(selectUserType)
 
   const bye = useCallback(async () => {
     const data = await signOut({ redirect: false, callbackUrl: '/' })
@@ -21,7 +26,14 @@ const Navbar = () => {
     >
       <Flex align="center" justify="space-between" direction="row">
         <Box w={40} justifySelf="flex-start">
-          <Img src="images/momentum_white.png" />
+          <VStack spacing={0} alignContent="center" justify="center">
+            <Img src="/images/momentum_white.png" />
+            {userType !== 0 && (
+              <Badge variant="subtle" colorScheme="brandSecondary">
+                Admin
+              </Badge>
+            )}
+          </VStack>
         </Box>
 
         <Box justifySelf="flex-end">

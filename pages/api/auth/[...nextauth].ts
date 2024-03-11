@@ -2,10 +2,21 @@ import NextAuth from 'next-auth'
 import { AuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 
-import { validateStudent } from '@/lib/db'
+import * as db from '@/lib/db'
 
 export const authOptions: AuthOptions = {
   callbacks: {
+    async jwt({ token, profile }) {
+      if (!Boolean(profile) || !Boolean(profile!.email)) return token
+
+      return {
+        userType: (await db.Admin.getAdminType(profile!.email!)) ?? 0,
+        ...token,
+      }
+    },
+    async session({ token, session }) {
+      return { userType: token.userType, ...session }
+    },
     async signIn({ profile }) {
       if (!profile?.email?.endsWith('@tec.mx')) {
         console.log(`---------------Invalid email ${profile?.email}`)
@@ -13,7 +24,7 @@ export const authOptions: AuthOptions = {
       }
 
       const id = profile!.email!.split('@')[0].toUpperCase()
-      const isValidStudent = await validateStudent(id)
+      const isValidStudent = await db.Student.validateStudent(id)
       if (!isValidStudent) {
         console.log(`---------------
           Not a valid student:

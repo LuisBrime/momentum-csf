@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 
+import * as db from '@/lib/db'
 import dbConnect from '@/lib/db/client'
 import { Group, Student } from '@/lib/db/models'
-import { ClientStudent } from '@/lib/types'
+import { studentToClient } from '@/lib/db/utils'
+import { ClientStudent, LogType } from '@/lib/types'
 
 import { authOptions } from './auth/[...nextauth]'
 
@@ -27,19 +29,34 @@ export default async function handler(
       return
     }
 
+    await Group.updateOne({ groupId }, { leftInscriptions: leftIns! - 1 })
+
     const studentId = session!.user!.email!.split('@')[0].toUpperCase()
-    await Group.updateOne({ _id: groupId }, { leftInscriptions: leftIns! - 1 })
     const student = await Student.findOneAndUpdate(
       { matricula: studentId },
       { registeredGroup: groupId },
     )
-    const cleanedStudent = {
-      id: student!.matricula,
-      name: student!.names,
-      registrationDate: student!.registrationDate.toString(),
-      registeredGroup: groupId,
-      visualSupport: null,
+
+    // Ignore issues to avoid making it
+    try {
+      db.Log.logAction(
+        student!.matricula,
+        LogType.StudentSession,
+        groupId,
+        session!.user!.email!,
+      )
+    } catch (e) {
+      console.log(`Error logging registered group`, e)
     }
+
+    const cleanedStudent = studentToClient(student!)
+    // const cleanedStudent = {
+    //   id: student!.matricula,
+    //   name: student!.names,
+    //   registrationDate: student!.registrationDate.toString(),
+    //   registeredGroup: groupId,
+    //   visualSupport: null,
+    // }
     res.status(201).json({ data: cleanedStudent })
   } else {
     res.status(400).json({ error: 'Method not valid' })

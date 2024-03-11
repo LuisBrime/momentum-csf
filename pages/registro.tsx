@@ -6,10 +6,10 @@ import type { GetServerSidePropsContext } from 'next'
 import { getServerSession } from 'next-auth/next'
 
 import { Navbar } from '@/components'
-import { retrieveStudent } from '@/lib/db'
+import * as db from '@/lib/db'
 import { getMonthString } from '@/lib/utils'
 import { useAppSelector } from '@/redux/hooks'
-import { setStudent } from '@/redux/reducers/student'
+import { setStudent, setUserType } from '@/redux/reducers/student'
 import { selectHasStartedRegistry, selectStudent } from '@/redux/selectors'
 import { wrapper } from '@/redux/store'
 import { CompleteRegistration, RegistroWidget } from '@/widgets'
@@ -19,7 +19,6 @@ import { authOptions } from './api/auth/[...nextauth]'
 export const getServerSideProps = wrapper.getServerSideProps(
   store => async (ctx: GetServerSidePropsContext) => {
     const session = await getServerSession(ctx.req, ctx.res, authOptions)
-
     if (!session) {
       return {
         redirect: {
@@ -30,8 +29,20 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }
 
     const id = session.user!.email!.split('@')[0].toUpperCase()
-    const student = await retrieveStudent(id)
-    store.dispatch(setStudent(student))
+    const student = await db.Student.retrieveStudent(id)
+    store.dispatch(setStudent(student!))
+
+    // @ts-ignore
+    const userType = session!.userType ?? 0
+    store.dispatch(setUserType(userType))
+    if (userType !== 0) {
+      return {
+        redirect: {
+          destination: '/admin/home',
+          permanent: false,
+        },
+      }
+    }
 
     return { props: {} }
   },
